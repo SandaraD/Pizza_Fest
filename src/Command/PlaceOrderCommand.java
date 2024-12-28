@@ -11,6 +11,6 @@ public class PlaceOrderCommand implements Command {
 
     @Override
     public void execute() {
-        System.out.println("Order has been placed successfully!");
+        System.out.println("Order has been placed successfully!" + " " + "Order Id is" + order.toString());
     }
 }

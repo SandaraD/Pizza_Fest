@@ -1,4 +1,4 @@
-package Context;
+package State;
 
 public class InPreparationState implements OrderState {
     @Override

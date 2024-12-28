@@ -1,4 +1,4 @@
-package Context;
+package State;
 
 public class OutForDeliveryState implements OrderState {
     @Override

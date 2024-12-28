@@ -1,4 +1,4 @@
-package Context;
+package State;
 
 public interface OrderState {
     void handle();
