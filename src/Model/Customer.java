@@ -9,6 +9,7 @@ public class Customer implements Observer {
     private String email;
     private String password;
     private List<Pizza> favoritePizzas = new ArrayList<>();
+    private LoyaltyProgram loyaltyProgram;
 
     // Constructor for name-only (used in some cases)
     public Customer(String name) {
@@ -20,6 +21,7 @@ public class Customer implements Observer {
         this.name = name;
         this.email = email;
         this.password = password;
+        this.loyaltyProgram = new LoyaltyProgram();
     }
 
     // Getters
@@ -43,6 +45,10 @@ public class Customer implements Observer {
     // Retrieve the list of favorite pizzas
     public List<Pizza> getFavoritePizzas() {
         return favoritePizzas;
+    }
+
+    public LoyaltyProgram getLoyaltyProgram() {
+        return loyaltyProgram;
     }
 
     // Observer pattern: Receive status updates

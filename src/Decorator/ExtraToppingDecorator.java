@@ -5,6 +5,7 @@ import Model.Pizza;
 public class ExtraToppingDecorator extends PizzaDecorator {
 
     public ExtraToppingDecorator(Pizza pizza) {
+
         super(pizza); // Pass the pizza object to the parent class
     }
 
@@ -15,6 +16,6 @@ public class ExtraToppingDecorator extends PizzaDecorator {
 
     @Override
     public double getCost() {
-        return super.getCost() + 2.50; // Add the cost for extra topping (example)
+        return super.getCost() + 200; // Add the cost for extra topping (example)
     }
 }

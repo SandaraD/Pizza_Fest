@@ -85,7 +85,7 @@ public class Main {
         if (choice == 1) {
             System.out.println("Loyalty Points for All Customers:");
             for (Customer customer : customers) {
-                System.out.println("Customer: " + customer.getName() + " | Points: " + loyaltyProgram.getPoints());
+                System.out.println("Customer: " + customer.getName() + " | Points: " + customer.getLoyaltyProgram().getPoints());
             }
         } else if (choice == 2) {
             System.out.print("Enter the customer name: ");
