@@ -8,12 +8,6 @@ import java.util.List;
 public class PromotionManager {
     private List<Promotion> promotions = new ArrayList<>();  // Use ArrayList for mutability
 
-//    public PromotionManager() {
-//        // Initialize the list of promotions with mutable list
-//        promotions.add(new Promotion(Promotion.PromotionType.BUY_TWO_GET_DISCOUNT, 25.0, "Buy 2, Get 25% Off"));
-//        promotions.add(new Promotion(Month.DECEMBER, Month.DECEMBER, 10.0, "Christmas Discount"));
-//    }
-
     // Method to get the list of promotions
     public List<Promotion> getPromotions() {
         return promotions;
@@ -57,8 +51,8 @@ public class PromotionManager {
     public void displayPromotionsWithPrice(int pizzaCount, LocalDate orderDate) {
         for (Promotion promo : promotions) {
             double discountedPrice = promo.applyPromotion(100, pizzaCount, orderDate);  // Example with a base price of 100
-            System.out.println("Promotion: " + promo.getName());
-            System.out.println("Discounted Price: " + discountedPrice);
+            double discountAmount = 100 - discountedPrice;  // Calculate the discount amount
+            double discountPercentage = (discountAmount / 100) * 100;
         }
     }
 }

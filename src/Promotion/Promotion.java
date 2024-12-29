@@ -13,7 +13,6 @@ public class Promotion {
 
     // Enum to differentiate between different promotion types
     public enum PromotionType {
-        BUY_TWO_GET_DISCOUNT,
         CHRISTMAS_DISCOUNT
     }
 
@@ -55,10 +54,7 @@ public class Promotion {
 
     // Apply the promotion based on the promotion type and pizza count
     public double applyPromotion(double totalPrice, int pizzaCount, LocalDate orderDate) {
-        if (promotionType == PromotionType.BUY_TWO_GET_DISCOUNT && pizzaCount >= 2) {
-            // Apply 25% discount if 2 or more pizzas are ordered
-            return totalPrice * (1 - discount / 100);
-        } else if (promotionType == PromotionType.CHRISTMAS_DISCOUNT && isChristmasMonth(orderDate)) {
+        if (promotionType == PromotionType.CHRISTMAS_DISCOUNT && isChristmasMonth(orderDate)) {
             // Apply 10% discount for Christmas month (December)
             return totalPrice * (1 - discount / 100);
         }

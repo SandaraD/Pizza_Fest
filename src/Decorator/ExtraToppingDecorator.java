@@ -11,11 +11,11 @@ public class ExtraToppingDecorator extends PizzaDecorator {
 
     @Override
     public String getDescription() {
-        return super.getDescription() + ", Extra Topping"; // Add extra topping description
+        return super.getDescription() + ", Extra Topping";
     }
 
     @Override
     public double getCost() {
-        return super.getCost() + 200; // Add the cost for extra topping (example)
+        return super.getCost() + 200; //Extra topping cost
     }
 }
