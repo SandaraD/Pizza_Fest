@@ -1,8 +1,7 @@
-package Promotion;
+package Promotion_Strategy;
 
 import java.time.LocalDate;
 import java.time.Month;
-import java.util.List;
 
 public class Promotion {
     private String name;
@@ -11,19 +10,12 @@ public class Promotion {
     private Month endMonth;
     private PromotionType promotionType;  // New field to distinguish between promotion types
 
-    // Enum to differentiate between different promotion types
+//Promotion Type
     public enum PromotionType {
         CHRISTMAS_DISCOUNT
     }
 
-    // Constructor for "Buy 2, Get 25% off" promotion
-    public Promotion(PromotionType promotionType, double discount, String name) {
-        this.promotionType = promotionType;
-        this.discount = discount;
-        this.name = name;
-    }
 
-    // Constructor for "Christmas Discount" promotion
     public Promotion(Month startMonth, Month endMonth, double discount, String name) {
         this.promotionType = PromotionType.CHRISTMAS_DISCOUNT;
         this.startMonth = startMonth;
@@ -40,28 +32,16 @@ public class Promotion {
         return discount;
     }
 
-    public Month getStartMonth() {
-        return startMonth;
-    }
-
-    public Month getEndMonth() {
-        return endMonth;
-    }
-
-    public PromotionType getPromotionType() {
-        return promotionType;
-    }
-
-    // Apply the promotion based on the promotion type and pizza count
+    // Apply the promotion
     public double applyPromotion(double totalPrice, int pizzaCount, LocalDate orderDate) {
         if (promotionType == PromotionType.CHRISTMAS_DISCOUNT && isChristmasMonth(orderDate)) {
-            // Apply 10% discount for Christmas month (December)
+            // Apply 10% discount
             return totalPrice * (1 - discount / 100);
         }
-        return totalPrice;  // No discount if conditions are not met
+        return totalPrice;
     }
 
-    // Check if the order was placed in Christmas month (December)
+    // Check if order was placed in December month
     private boolean isChristmasMonth(LocalDate orderDate) {
         return orderDate.getMonth() == Month.DECEMBER;
     }

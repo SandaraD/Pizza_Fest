@@ -1,4 +1,4 @@
-package Payment;
+package Payment_Strategy;
 
 public class DigitalWalletPayment implements PaymentMethod {
     @Override

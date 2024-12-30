@@ -12,12 +12,12 @@ import Model.Customer;
 import Model.LoyaltyProgram;
 import Model.Order;
 import Model.Pizza;
-import Payment.CreditCardPayment;
-import Payment.DigitalWalletPayment;
-import Payment.PaymentMethod;
-import Payment.PaymentProcessor;
-import Promotion.Promotion;
-import Promotion.PromotionManager;
+import Payment_Strategy.CreditCardPayment;
+import Payment_Strategy.DigitalWalletPayment;
+import Payment_Strategy.PaymentMethod;
+import Payment_Strategy.PaymentProcessor;
+import Promotion_Strategy.Promotion;
+import Promotion_Strategy.PromotionManager;
 
 import java.time.Month;
 import java.util.ArrayList;
@@ -33,16 +33,16 @@ public class Main {
 
         PromotionManager promotionManager = new PromotionManager();
 
-        // Create promotions
+        // Create Promotion
         Promotion christmasPromotion = new Promotion(Month.DECEMBER, Month.DECEMBER, 10.0, "Christmas Discount");
 
-        // Add promotions to the manager
+        // Add promotions to the PromotionManager
         promotionManager.addPromotion(christmasPromotion);
 
         while (true) {
-            System.out.println("\n=== Pizza Ordering System ===");
-            System.out.println("1. Register New User");
-            System.out.println("2. View All Registered Users");
+            System.out.println("\n=== Pizza Ordering System - PIZZA FEST 🍕===");
+            System.out.println("1. Register New Customer");
+            System.out.println("2. View All Registered Customers");
             System.out.println("3. Create Pizza");
             System.out.println("4. Order Pizza");
             System.out.println("5. View All Created Pizzas");
@@ -62,57 +62,55 @@ public class Main {
                 case 6 -> viewFavoritePizzas(customers);
                 case 7 -> viewAvailablePromotions(promotionManager);
                 case 8 -> {
-                    System.out.println("Thank you for using Pizza Ordering System. Goodbye!");
+                    System.out.println("Thank you for using Pizza Ordering System.");
                     scanner.close();
                     System.exit(0);
                 }
-                default -> System.out.println("Invalid option. Please choose again.");
+                default -> System.out.println("Invalid option. Please choose again ☹︎.");
             }
         }
     }
 
 
     private static void registerUser(Scanner scanner, List<Customer> customers) {
-        System.out.println("\n=== Register New User ===");
+        System.out.println("\n=== Register New Customer ☺︎ ===");
         System.out.print("Enter your name: ");
         String name = scanner.nextLine();
 
-        System.out.print("Enter your email: ");
-        String email = scanner.nextLine();
+       //email validation
+        String email;
+        while (true) {
+            System.out.print("Enter your email: ");
+            email = scanner.nextLine();
+            if (isValidEmail(email)) {
+                break;
+            } else {
+                System.out.println("Invalid email format. Please try again. ☹︎");
+            }
+        }
 
         System.out.print("Create a password: ");
         String password = scanner.nextLine();
 
         customers.add(new Customer(name, email, password));
-        System.out.println("User registered successfully!");
+        System.out.println("Customer registered successfully! ☺︎ ");
     }
 
+    // validate email
+    private static boolean isValidEmail(String email) {
+        String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+        return email.matches(emailRegex);
+    }
+
+
     private static void viewAllUsers(List<Customer> customers) {
-        System.out.println("\n=== Registered Users ===");
+        System.out.println("\n=== Registered Customer ☺︎ ===");
         if (customers.isEmpty()) {
-            System.out.println("No users found.");
+            System.out.println("No Customers found.☹︎ ");
         } else {
             customers.forEach(customer ->
                     System.out.println("Name: " + customer.getName() + ", Email: " + customer.getEmail()));
         }
-    }
-
-    private static Customer selectCustomerForOrder(Scanner scanner, List<Customer> customers) {
-        System.out.println("\n=== Select User for Order ===");
-        System.out.println("Please select a customer to place the order:");
-        for (int i = 0; i < customers.size(); i++) {
-            System.out.println((i + 1) + ". " + customers.get(i).getName());
-        }
-        System.out.print("Enter the number corresponding to the customer: ");
-        int customerChoice = scanner.nextInt();
-        scanner.nextLine(); // Consume the newline character
-
-        if (customerChoice < 1 || customerChoice > customers.size()) {
-            System.out.println("Invalid choice, please try again.");
-            return selectCustomerForOrder(scanner, customers); // Recursive call if invalid input
-        }
-
-        return customers.get(customerChoice - 1); // Return the selected customer
     }
 
 
@@ -122,14 +120,32 @@ public class Main {
         System.out.print("Enter a custom pizza name: ");
         String pizzaName = scanner.nextLine();
 
-        System.out.print("Choose your size (Small, Medium, Large): ");
-        String size = scanner.nextLine();
+        // Choose size
+        String[] sizes = {"Small-4 slices", "Medium-6 slices", "Large-8 slices"};
+        System.out.println("Choose your pizza size:");
+        for (int i = 0; i < sizes.length; i++) {
+            System.out.println((i + 1) + ". " + sizes[i]);
+        }
+        int sizeChoice = getValidChoice(scanner, sizes.length);
+        String size = sizes[sizeChoice - 1];
 
-        System.out.print("Choose your crust (Thin, Thick): ");
-        String crust = scanner.nextLine();
+        // Choose crust
+        String[] crusts = {"Thin", "Thick"};
+        System.out.println("Choose your pizza crust:");
+        for (int i = 0; i < crusts.length; i++) {
+            System.out.println((i + 1) + ". " + crusts[i]);
+        }
+        int crustChoice = getValidChoice(scanner, crusts.length);
+        String crust = crusts[crustChoice - 1];
 
-        System.out.print("Choose your sauce (Tomato, Alfredo): ");
-        String sauce = scanner.nextLine();
+        // Choose sauce
+        String[] sauces = {"Tomato", "BBQ (mild spicy)", "Chilli Sauce (very spicy)"};
+        System.out.println("Choose your sauce:");
+        for (int i = 0; i < sauces.length; i++) {
+            System.out.println((i + 1) + ". " + sauces[i]);
+        }
+        int sauceChoice = getValidChoice(scanner, sauces.length);
+        String sauce = sauces[sauceChoice - 1];
 
         Pizza.PizzaBuilder pizzaBuilder = new Pizza.PizzaBuilder()
                 .setSize(size)
@@ -137,23 +153,47 @@ public class Main {
                 .setSauce(sauce)
                 .setName(pizzaName);
 
+        // Add toppings
+        String[] availableToppings = {"Mushrooms (veg)", "Onions (veg)", "Olives (veg)", "Capsicum (veg)","Bell peppers (veg)",
+                "Corn (veg)", "Tomato (veg)", "Chicken", "Ham", "Bacon", "Sausage", "Pepperoni" };
+        System.out.println("Available toppings:");
+        for (int i = 0; i < availableToppings.length; i++) {
+            System.out.println((i + 1) + ". " + availableToppings[i]);
+        }
+        System.out.println("Type 'done' when you're done adding toppings.");
         while (true) {
-            System.out.print("Add a topping (or type 'done'): ");
-            String topping = scanner.nextLine();
-            if ("done".equalsIgnoreCase(topping)) break;
-            pizzaBuilder.addTopping(topping);
+            System.out.print("Add a topping: ");
+            String toppingInput = scanner.nextLine();
+            if ("done".equalsIgnoreCase(toppingInput)) break;
+
+            try {
+                int toppingChoice = Integer.parseInt(toppingInput);
+                if (toppingChoice > 0 && toppingChoice <= availableToppings.length) {
+                    pizzaBuilder.addTopping(availableToppings[toppingChoice - 1]);
+                } else {
+                    System.out.println("Invalid choice. Please select a valid topping.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a number or 'done'.");
+            }
         }
 
-        System.out.print("Choose your cheese (Mozzarella, Cheddar): ");
-        String cheese = scanner.nextLine();
+        // Choose cheese
+        String[] cheeses = {"Mozzarella", "Cheddar", "Parmesan"};
+        System.out.println("Choose your cheese:");
+        for (int i = 0; i < cheeses.length; i++) {
+            System.out.println((i + 1) + ". " + cheeses[i]);
+        }
+        int cheeseChoice = getValidChoice(scanner, cheeses.length);
+        String cheese = cheeses[cheeseChoice - 1];
         pizzaBuilder.setCheese(cheese);
 
         Pizza pizza = pizzaBuilder.build();
         pizzas.add(pizza);
         System.out.println("Your pizza: " + pizza.getDescription());
-        // Display pizza cost
         System.out.println("Total cost: Rs." + pizza.getCost() + " /=");
 
+        // Add to favorites
         System.out.print("Add this pizza to your favorites? (yes/no): ");
         String addToFavorites = scanner.nextLine();
         if ("yes".equalsIgnoreCase(addToFavorites)) {
@@ -174,14 +214,32 @@ public class Main {
         }
     }
 
-    private static void orderPizza(Scanner scanner, List<Customer> customers, List<Pizza> pizzas, PromotionManager promotionManager, LoyaltyProgram loyaltyProgram) {
+    //choice
+    private static int getValidChoice(Scanner scanner, int maxOption) {
+        while (true) {
+            System.out.print("Enter your choice (1-" + maxOption + "): ");
+            if (scanner.hasNextInt()) {
+                int choice = scanner.nextInt();
+                scanner.nextLine();
+                if (choice >= 1 && choice <= maxOption) {
+                    return choice;
+                }
+            } else {
+                scanner.nextLine();
+            }
+            System.out.println("Invalid choice. Please try again.");
+        }
+    }
+
+    private static void orderPizza(Scanner scanner, List<Customer> customers, List<Pizza> pizzas, PromotionManager promotionManager,
+                                   LoyaltyProgram loyaltyProgram) {
         System.out.println("\n=== Order a Pizza ===");
         if (pizzas.isEmpty()) {
-            System.out.println("No pizzas available to order.");
+            System.out.println("No pizzas available to order. Please add number 3 to create pizza.");
             return;
         }
 
-        // Display available pizzas
+        // show available pizzas
         System.out.println("Available Pizzas:");
         for (int i = 0; i < pizzas.size(); i++) {
             System.out.println((i + 1) + ". " + pizzas.get(i).getDescription());
@@ -192,17 +250,17 @@ public class Main {
 
         Pizza selectedPizza = pizzas.get(pizzaChoice - 1);
 
-        // Ask for quantity
+        // quantity
         System.out.print("Enter the quantity of pizzas you want to order: ");
         int quantity = scanner.nextInt();
         scanner.nextLine();
 
-        // Calculate the total cost based on quantity
+        // Total cost based on quantity
         double pizzaCost = selectedPizza.getCost();
         double totalCost = pizzaCost * quantity;
 
         // Display the original total cost
-        System.out.println("Original cost for " + quantity + " pizza(s): Rs." + totalCost + " /=");
+        System.out.println(" Cost for " + quantity + " pizza(s): Rs." + totalCost + " /=");
 
         // Show loyalty points
         System.out.println("You have " + loyaltyProgram.getPoints() + " loyalty points.");
@@ -211,11 +269,11 @@ public class Main {
         double discountFromPoints = 0;
 
         if ("yes".equalsIgnoreCase(redeemChoice)) {
-            System.out.print("Enter the number of points to redeem: ");
+            System.out.print("Enter the number of points to redeem (1 point = Rs.10/=) : ");
             int pointsToRedeem = scanner.nextInt();
             scanner.nextLine();
             if (pointsToRedeem <= loyaltyProgram.getPoints()) {
-                discountFromPoints = pointsToRedeem * 1.0; // Example: Each point gives Rs. 1 discount
+                discountFromPoints = pointsToRedeem * 10; //1 point = Rs 10
                 loyaltyProgram.redeemPoints(pointsToRedeem);
                 System.out.println("Redeemed " + pointsToRedeem + " points for a Rs." + discountFromPoints + " discount.");
             } else {
@@ -223,7 +281,7 @@ public class Main {
             }
         }
 
-        // Apply promotions
+        // Apply promotion
         System.out.print("Do you want to apply any promotion? (yes/no): ");
         String applyPromotion = scanner.nextLine();
         double promotionDiscount = 0;
@@ -233,7 +291,7 @@ public class Main {
             promotionManager.getPromotions().forEach(promotion ->
                     System.out.println(promotion.getName() + ": " + promotion.getDiscount() + "% off")
             );
-            System.out.print("Enter promotion name (Eg: Christmas Discount) : ");
+            System.out.print("Enter promotion name (Please enter promotion name correctly to get the promotion, Eg: Christmas Discount) : ");
             String promoName = scanner.nextLine();
             Promotion promotion = promotionManager.getPromotion(promoName);
             if (promotion != null) {
@@ -246,7 +304,7 @@ public class Main {
 
         // Calculate final cost
         double finalCost = totalCost - promotionDiscount - discountFromPoints;
-        System.out.println("Total cost after discounts: Rs." + finalCost + " /=");
+        System.out.println("Total cost after discount: Rs." + finalCost + " /=");
 
         // Delivery or pickup
         System.out.print("Pick up or Delivery? (Enter 'pickup' or 'delivery'): ");
@@ -259,43 +317,44 @@ public class Main {
             System.out.println("You will pick up your pizza at the shop.");
         }
 
-        // Payment method selection
+        // Payment method options
         System.out.print("Choose payment method (1 for Credit Card, 2 for Digital Wallet): ");
         int paymentChoice = scanner.nextInt();
         PaymentMethod paymentMethod = (paymentChoice == 1) ? new CreditCardPayment() : new DigitalWalletPayment();
         new PaymentProcessor(paymentMethod).process(finalCost);
 
-        // Add loyalty points for this order
+        // loyalty points for the just placed order
         loyaltyProgram.addPoints(finalCost);
         System.out.println("Earned loyalty points: " + (int) (finalCost / 100) + " (1 point per Rs. 100 spent).");
         System.out.println("Your new loyalty points balance: " + loyaltyProgram.getPoints());
 
-        // Customization options
+        // pizza customization options
         CustomizationHandler toppingHandler = new ToppingHandler();
         toppingHandler.setNextHandler(new CheeseHandler());
-        scanner.nextLine(); // Consume leftover newline
+        scanner.nextLine();
         System.out.print("Add extra customization (e.g., 'extra topping' or 'extra cheese'): ");
         toppingHandler.handleRequest(scanner.nextLine());
 
-        // Order context and status updates
+        // Order context and order status updates
         OrderContext orderContext = new OrderContext();
         orderContext.setState(new InPreparationState());
         orderContext.request();
 
         double totalAmount = finalCost;
-        Customer customer = customers.get(0); // Assuming the first customer for simplicity
+        Customer customer = customers.get(0);
 
         Order order = new Order(totalAmount, loyaltyProgram, customer);
         order.addObserver(customer);
         new PlaceOrderCommand(order).execute();
 
         Pizza enhancedPizza = new ExtraToppingDecorator(selectedPizza);
-        System.out.println("Enhanced pizza: " + enhancedPizza.getDescription());
+        System.out.println("Pizza Order Summary: " + enhancedPizza.getDescription());
 
-        // Feedback
+        // customer feedback
         System.out.print("Provide feedback: ");
         String feedback = scanner.nextLine();
 
+        //customer rating
         int rating;
         do {
             System.out.print("Rate your experience (1-5) (1 = Worst, 5 = Best): ");
@@ -308,6 +367,7 @@ public class Main {
         FeedbackCommand feedbackCommand = new FeedbackCommand(feedback, rating);
         feedbackCommand.execute();
 
+        //order statuses
         order.setStatus("Your pizza is being prepared!");
         order.setStatus("Out for delivery!");
         order.setStatus("Delivered!");
@@ -326,7 +386,7 @@ public class Main {
     }
 
     private static void viewFavoritePizzas(List<Customer> customers) {
-        System.out.println("\n=== Favorite Pizzas ===");
+        System.out.println("\n=== Favorite Pizzas ♥ ===");
         if (customers.isEmpty()) {
             System.out.println("No customers available.");
             return;

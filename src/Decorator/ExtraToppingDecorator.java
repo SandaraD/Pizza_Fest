@@ -6,7 +6,7 @@ public class ExtraToppingDecorator extends PizzaDecorator {
 
     public ExtraToppingDecorator(Pizza pizza) {
 
-        super(pizza); // Pass the pizza object to the parent class
+        super(pizza);
     }
 
     @Override
@@ -16,6 +16,6 @@ public class ExtraToppingDecorator extends PizzaDecorator {
 
     @Override
     public double getCost() {
-        return super.getCost() + 200; //Extra topping cost
+        return super.getCost() + 200; //+200 for extra topping
     }
 }

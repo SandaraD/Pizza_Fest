@@ -3,8 +3,9 @@ package Model;
 public class LoyaltyProgram {
     private int points;
 
+
     public void addPoints(double amountSpent) {
-        int pointsEarned = (int) (amountSpent / 100); // Example: 1 point for every 100 spent
+        int pointsEarned = (int) (amountSpent / 100); //1 point for every 100 spent
         this.points += pointsEarned;
     }
 

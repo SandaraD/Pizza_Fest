@@ -11,12 +11,7 @@ public class Customer implements Observer {
     private List<Pizza> favoritePizzas = new ArrayList<>();
     private LoyaltyProgram loyaltyProgram;
 
-    // Constructor for name-only (used in some cases)
-    public Customer(String name) {
-        this.name = name;
-    }
 
-    // Constructor for name, email, and password
     public Customer(String name, String email, String password) {
         this.name = name;
         this.email = email;
@@ -24,7 +19,6 @@ public class Customer implements Observer {
         this.loyaltyProgram = new LoyaltyProgram();
     }
 
-    // Getters
     public String getName() {
         return name;
     }
@@ -37,12 +31,11 @@ public class Customer implements Observer {
         return password;
     }
 
-    // Add a pizza to the favorite list
     public void addFavoritePizza(Pizza pizza) {
         favoritePizzas.add(pizza);
     }
 
-    // Retrieve the list of favorite pizzas
+    //list of favorite pizzas
     public List<Pizza> getFavoritePizzas() {
         return favoritePizzas;
     }

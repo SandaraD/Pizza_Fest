@@ -13,7 +13,7 @@ public class Pizza {
     private String cheese;
     private String cost;
 
-    // PizzaBuilder class inside Pizza
+
     public static class PizzaBuilder {
         private String name;
         private String size;
@@ -71,7 +71,7 @@ public class Pizza {
         }
     }
 
-    // Method to add a topping (for extra toppings)
+    //  extra toppings
     public void addTopping(String topping) {
         if (this.toppings == null) {
             this.toppings = new ArrayList<>();
@@ -80,18 +80,19 @@ public class Pizza {
     }
 
     public String getDescription() {
-        return name + " " + size + " " + crust + " " + sauce + " pizza with " + String.join(", ", toppings) + " and " + cheese + " cheese.";
+        return name + " " + size + " " + crust + " " + sauce + " pizza with " + String.join(", ", toppings)
+                + " and " + cheese + " cheese.";
     }
 
     public double getCost() {
-        // Example cost calculation: base cost + topping cost
+        // cost: base cost + topping cost
         double cost = 300; // Base cost
         if (size.equals("Large")) {
-            cost += 100; // Additional cost for large size
+            cost += 100; //+100 for large pizzas
         } else if (size.equals("Medium")) {
-            cost += 50;  // Additional cost for medium size
+            cost += 50;  // +50 for medium pizzas
         }
-        cost += toppings.size() * 150; // Example: each topping adds 150
+        cost += toppings.size() * 150; // +150 for each topping
         return cost;
     }
 

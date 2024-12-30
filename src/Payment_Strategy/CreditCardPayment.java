@@ -1,4 +1,4 @@
-package Payment;
+package Payment_Strategy;
 
 public class CreditCardPayment implements PaymentMethod {
     @Override
