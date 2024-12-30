@@ -154,8 +154,8 @@ public class Main {
                 .setName(pizzaName);
 
         // Add toppings
-        String[] availableToppings = {"Mushrooms (veg)", "Onions (veg)", "Olives (veg)", "Capsicum (veg)","Bell peppers (veg)",
-                "Corn (veg)", "Tomato (veg)", "Chicken", "Ham", "Bacon", "Sausage", "Pepperoni" };
+        String[] availableToppings = {"Mushrooms (veg)", "Onions (veg)", "Olives (veg)", "Capsicum (veg)",
+                "Bell peppers (veg)","Corn (veg)", "Tomato (veg)", "Chicken", "Ham", "Bacon", "Sausage", "Pepperoni" };
         System.out.println("Available toppings:");
         for (int i = 0; i < availableToppings.length; i++) {
             System.out.println((i + 1) + ". " + availableToppings[i]);

@@ -6,3 +6,4 @@ public class InPreparationState implements OrderState {
         System.out.println("Order is in preparation.");
     }
 }
+
